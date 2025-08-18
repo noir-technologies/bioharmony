@@ -102,6 +102,51 @@ class LCDDisplay:
             capitalized_mode = mode_type
         self.print_at(1, 0, f"{capitalized_mode} soil")
     
+    def display_comprehensive_status(self, comprehensive_status):
+        """Display comprehensive plant status including ambient conditions
+        
+        Args:
+            comprehensive_status (dict): Result from PlantAnalyzer.get_comprehensive_status()
+        """
+        self.clear()
+        
+        # First line: Overall status or soil status
+        if comprehensive_status['overall_status'] == 'good':
+            line1 = f"Status: Good"
+        else:
+            soil_msg = DISPLAY_MESSAGES.get(comprehensive_status['soil_status'], 
+                                          comprehensive_status['soil_status'])
+            line1 = f"Soil: {soil_msg}"
+        
+        # Second line: Temperature and humidity
+        temp = comprehensive_status['ambient_temperature']
+        humidity = comprehensive_status['ambient_humidity']
+        line2 = f"{temp:.1f}C {humidity:.0f}%RH"
+        
+        self.print_at(0, 0, line1)
+        self.print_at(1, 0, line2)
+    
+    def display_ambient_details(self, humidity, temperature, conditions):
+        """Display detailed ambient conditions
+        
+        Args:
+            humidity (float): Ambient humidity percentage
+            temperature (float): Temperature in Celsius
+            conditions (dict): Ambient conditions analysis
+        """
+        self.clear()
+        
+        # First line: Temperature and humidity values
+        line1 = f"{temperature:.1f}C {humidity:.0f}%RH"
+        
+        # Second line: Status indicators
+        temp_indicator = "T" if conditions['temperature_status'] == 'normal' else "!"
+        humidity_indicator = "H" if conditions['humidity_status'] == 'normal' else "!"
+        line2 = f"{temp_indicator}{humidity_indicator} Ambient"
+        
+        self.print_at(0, 0, line1)
+        self.print_at(1, 0, line2)
+    
     def display_custom_message(self, line1, line2=""):
         """Display custom two-line message
         
