@@ -1,11 +1,11 @@
 import board
 import analogio
-from config import HUMIDITY_SENSOR_PIN
+from config import SOIL_HUMIDITY_SENSOR_PIN
 
-class HumiditySensor:
+class SoilHumiditySensor:
     """Manages soil humidity sensor readings"""
     
-    def __init__(self, pin_name=HUMIDITY_SENSOR_PIN):
+    def __init__(self, pin_name=SOIL_HUMIDITY_SENSOR_PIN):
         """Initialize the humidity sensor
         
         Args:
